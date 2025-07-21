@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventList from './components/EventList';
-import logo from './assets/schedulai.svg'; 
+import logo from './assets/schedulai.svg';
+import AddEventForm from './components/AddEventForm';
 
 
 export interface Event {
@@ -14,24 +15,35 @@ export interface Event {
   archived: boolean;
 }
 
+type NewEventData = Omit<Event, 'id' | 'category' | 'archived'>;
+
 const API_URL = 'http://localhost:5001/events';
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
 
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setEvents(response.data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
   
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(API_URL);
-        setEvents(response.data);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      }
-    };
-
     fetchEvents();
   }, []);
+
+  const handleAddEvent = async (eventData: NewEventData) => {
+    try {
+      await axios.post(API_URL, eventData);
+      fetchEvents(); 
+    } catch (error) {
+      console.error("Failed to add event:", error);
+      
+    }
+  };
 
   return (
     <div className="bg-black min-h-screen font-sans text-gray-300">
@@ -50,6 +62,8 @@ function App() {
       </header>
       <main className="container mx-auto p-4 sm:p-6 lg:p-8">
         
+        <AddEventForm onAddEvent={handleAddEvent} />
+
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-white mb-5">Upcoming Events</h2>
           <EventList events={events} />
