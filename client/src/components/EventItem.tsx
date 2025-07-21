@@ -45,14 +45,12 @@ const EventItem = ({ event, onDelete, onArchive }: EventItemProps) => {
         </span>
       </div>
       <div className="mt-4 flex gap-2 justify-end">
-        {!event.archived && (
-          <button
-            onClick={() => onArchive(event.id)}
-            className="text-xs font-semibold text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md transition-colors"
-          >
-            Archive
-          </button>
-        )}
+        <button
+          onClick={() => onArchive(event.id)}
+          className="text-xs font-semibold text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md transition-colors"
+        >
+          {event.archived ? 'Unarchive' : 'Archive'}
+        </button>
         <button
           onClick={() => onDelete(event.id)}
           className="text-xs font-semibold text-red-400 hover:text-white bg-red-900/50 hover:bg-red-800/80 px-3 py-1 rounded-md transition-colors"
