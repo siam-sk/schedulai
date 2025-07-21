@@ -62,7 +62,7 @@ app.post('/events', (req: Request, res: Response) => {
     date,
     time,
     notes,
-    category, // Use the dynamically determined category
+    category,
     archived: false,
   };
 
@@ -78,7 +78,7 @@ app.put('/events/:id', (req: Request, res: Response) => {
     return res.status(404).json({ message: 'Event not found.' });
   }
 
-  events[eventIndex].archived = true;
+  events[eventIndex].archived = !events[eventIndex].archived;
   res.status(200).json(events[eventIndex]);
 });
 
