@@ -57,7 +57,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
+              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
             />
           </div>
           <div>
@@ -68,7 +68,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
               value={time}
               onChange={(e) => setTime(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
+              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
             />
           </div>
         </div>

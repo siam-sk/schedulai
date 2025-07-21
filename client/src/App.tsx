@@ -45,6 +45,24 @@ function App() {
     }
   };
 
+  const handleDeleteEvent = async (id: number) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      fetchEvents(); 
+    } catch (error) {
+      console.error(`Failed to delete event ${id}:`, error);
+    }
+  };
+
+  const handleArchiveEvent = async (id: number) => {
+    try {
+      await axios.put(`${API_URL}/${id}`);
+      fetchEvents();
+    } catch (error) {
+      console.error(`Failed to archive event ${id}:`, error);
+    }
+  };
+
   return (
     <div className="bg-black min-h-screen font-sans text-gray-300">
       <header className="bg-gray-900/70 border-b border-gray-800 backdrop-blur-lg sticky top-0 z-10">
@@ -66,7 +84,7 @@ function App() {
 
         <div className="mt-6">
           <h2 className="text-xl font-semibold text-white mb-5">Upcoming Events</h2>
-          <EventList events={events} />
+          <EventList events={events} onDeleteEvent={handleDeleteEvent} onArchiveEvent={handleArchiveEvent} />
         </div>
       </main>
     </div>

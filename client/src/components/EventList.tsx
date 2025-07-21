@@ -3,10 +3,11 @@ import EventItem from './EventItem';
 
 interface EventListProps {
   events: Event[];
-  
+  onDeleteEvent: (id: number) => void;
+  onArchiveEvent: (id: number) => void;
 }
 
-const EventList = ({ events }: EventListProps) => {
+const EventList = ({ events, onDeleteEvent, onArchiveEvent }: EventListProps) => {
   if (events.length === 0) {
     return (
       <div className="text-center text-gray-500 py-16 px-4 border-2 border-dashed border-gray-800 rounded-lg">
@@ -19,7 +20,7 @@ const EventList = ({ events }: EventListProps) => {
   return (
     <ul className="space-y-4">
       {events.map(event => (
-        <EventItem key={event.id} event={event} />
+        <EventItem key={event.id} event={event} onDelete={onDeleteEvent} onArchive={onArchiveEvent} />
       ))}
     </ul>
   );
