@@ -19,6 +19,20 @@ interface Event {
 let events: Event[] = [];
 let currentId = 1;
 
+const categorizeEvent = (title: string, notes?: string): Event['category'] => {
+  const workKeywords = ['meeting', 'project', 'client', 'sprint', 'deadline'];
+  const personalKeywords = ['birthday', 'family', 'party', 'doctor', 'gym'];
+  const textToSearch = `${title.toLowerCase()} ${notes?.toLowerCase() || ''}`;
+
+  if (workKeywords.some(keyword => textToSearch.includes(keyword))) {
+    return 'Work';
+  }
+  if (personalKeywords.some(keyword => textToSearch.includes(keyword))) {
+    return 'Personal';
+  }
+  return 'Other';
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -40,13 +54,15 @@ app.post('/events', (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Title, date, and time are required.' });
   }
 
+  const category = categorizeEvent(title, notes);
+
   const newEvent: Event = {
     id: currentId++,
     title,
     date,
     time,
     notes,
-    category: 'Other',
+    category, // Use the dynamically determined category
     archived: false,
   };
 
