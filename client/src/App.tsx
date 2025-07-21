@@ -15,12 +15,16 @@ export interface Event {
   archived: boolean;
 }
 
+type Category = 'Work' | 'Personal' | 'Other';
+type FilterCategory = 'All' | Category;
+
 type NewEventData = Omit<Event, 'id' | 'category' | 'archived'>;
 
 const API_URL = 'http://localhost:5001/events';
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [filter, setFilter] = useState<FilterCategory>('All');
 
   const fetchEvents = async () => {
     try {
@@ -63,6 +67,13 @@ function App() {
     }
   };
 
+  const filteredEvents = events.filter(event => {
+    if (filter === 'All') return true;
+    return event.category === filter;
+  });
+
+  const filterCategories: FilterCategory[] = ['All', 'Work', 'Personal', 'Other'];
+
   return (
     <div className="bg-black min-h-screen font-sans text-gray-300">
       <header className="bg-gray-900/70 border-b border-gray-800 backdrop-blur-lg sticky top-0 z-10">
@@ -82,9 +93,26 @@ function App() {
         
         <AddEventForm onAddEvent={handleAddEvent} />
 
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold text-white mb-5">Upcoming Events</h2>
-          <EventList events={events} onDeleteEvent={handleDeleteEvent} onArchiveEvent={handleArchiveEvent} />
+        <div className="mt-8">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-5 gap-4">
+            <h2 className="text-xl font-semibold text-white">Upcoming Events</h2>
+            <div className="flex items-center justify-center gap-1 border border-gray-800 rounded-full p-1 bg-gray-900">
+              {filterCategories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setFilter(category)}
+                  className={`px-3 py-1 text-sm font-medium rounded-full transition-colors duration-200 ${
+                    filter === category
+                      ? 'bg-indigo-600 text-white'
+                      : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+          <EventList events={filteredEvents} onDeleteEvent={handleDeleteEvent} onArchiveEvent={handleArchiveEvent} />
         </div>
       </main>
     </div>
