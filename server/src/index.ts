@@ -16,10 +16,67 @@ interface Event {
 }
 
 
-let events: Event[] = [];
-let currentId = 1;
+let events: Event[] = [
+  {
+    id: 1,
+    title: 'Q3 Project Kick-off Meeting',
+    date: '2025-07-22',
+    time: '10:00',
+    notes: 'Finalize the project scope and assign initial tasks.',
+    category: 'Work',
+    archived: false,
+  },
+  {
+    id: 2,
+    title: "Alex's Birthday Party",
+    date: '2025-07-26',
+    time: '19:00',
+    notes: "Don't forget to buy a gift!",
+    category: 'Personal',
+    archived: false,
+  },
+  {
+    id: 3,
+    title: 'Renew Car Insurance',
+    date: '2025-07-24',
+    time: '14:30',
+    notes: 'Check for better quotes online first.',
+    category: 'Other',
+    archived: false,
+  },
+  {
+    id: 4,
+    title: 'Client Presentation Prep',
+    date: '2025-08-01',
+    time: '11:00',
+    notes: 'Review the slides with the design team.',
+    category: 'Work',
+    archived: false,
+  },
+  {
+    id: 5,
+    title: 'Dentist Appointment',
+    date: '2025-07-15',
+    time: '09:30',
+    notes: 'Routine check-up. All good.',
+    category: 'Personal',
+    archived: true,
+  },
+  {
+    id: 6,
+    title: 'Submit Q2 Project Report',
+    date: '2025-07-18',
+    time: '17:00',
+    notes: 'Report submitted to management.',
+    category: 'Work',
+    archived: true,
+  },
+];
 
-const categorizeEvent = (title: string, notes?: string): Event['category'] => {
+let currentId = 7; 
+
+
+const categorizeEvent = (title: string, notes?: string): 'Work' | 'Personal' | 'Other' => {
   const workKeywords = ['meeting', 'project', 'client', 'sprint', 'deadline'];
   const personalKeywords = ['birthday', 'family', 'party', 'doctor', 'gym'];
   const textToSearch = `${title.toLowerCase()} ${notes?.toLowerCase() || ''}`;
