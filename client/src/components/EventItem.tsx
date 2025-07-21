@@ -1,5 +1,6 @@
 import type { Event } from '../App';
 import { format } from 'date-fns';
+import { Archive, Trash2, Clock } from 'lucide-react';
 
 interface EventItemProps {
   event: Event;
@@ -8,55 +9,76 @@ interface EventItemProps {
 }
 
 const EventItem = ({ event, onDelete, onArchive }: EventItemProps) => {
-  
   const categoryStyles = {
-    Work: 'border-indigo-500 text-indigo-400',
-    Personal: 'border-green-500 text-green-400',
-    Other: 'border-gray-600 text-gray-500',
+    Work: 'bg-indigo-900/50 text-indigo-300 border border-indigo-700/50',
+    Personal: 'bg-green-900/50 text-green-300 border border-green-700/50',
+    Other: 'bg-gray-700/50 text-gray-400 border border-gray-600/50',
   };
 
-  
   const eventDateTime = new Date(`${event.date}T${event.time}`);
 
   return (
     <li
       className={`
-        bg-gray-900 border border-gray-800 p-5 rounded-lg transition-all duration-300
-        ${event.archived ? 'bg-gray-950 text-gray-600' : 'hover:border-gray-700'}
+        bg-[#171717] border border-gray-800 rounded-xl
+        flex transition-all duration-300 group relative overflow-hidden
+        ${event.archived ? 'opacity-60' : 'hover:border-gray-700 hover:scale-[1.02]'}
       `}
     >
-      <div className="flex justify-between items-start gap-4">
+      
+      <div className="flex flex-col items-center justify-center w-24 p-4 bg-black/20 border-r-2 border-dashed border-gray-800/60">
+        <span className="text-3xl font-bold text-white tracking-tighter">
+          {format(eventDateTime, 'd')}
+        </span>
+        <span className="text-sm font-semibold text-gray-400 uppercase">
+          {format(eventDateTime, 'MMM')}
+        </span>
+      </div>
+
+      
+      <div className="p-5 flex-grow flex flex-col">
         <div className="flex-grow">
-          <h3 className={`font-semibold text-lg text-white ${event.archived ? 'line-through' : ''}`}>
-            {event.title}
-          </h3>
-          <p className="text-sm text-gray-400 mt-1">
-            
-            {format(eventDateTime, "dd/MM/yyyy 'at' h:mm a")}
-          </p>
+          
+          <div className="flex justify-between items-start mb-3">
+            <h3 className={`font-bold text-lg text-white ${event.archived ? 'line-through' : ''}`}>
+              {event.title}
+            </h3>
+            <span className={`text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap ${categoryStyles[event.category]}`}>
+              {event.category}
+            </span>
+          </div>
+
+          
+          <div className="flex items-center gap-2 text-sm text-gray-400 mb-4">
+            <Clock size={14} />
+            <span>{format(eventDateTime, 'h:mm a')}</span>
+          </div>
+
+          
           {event.notes && (
-            <p className="text-gray-400 mt-3 bg-black p-3 rounded-md text-sm border border-gray-800">
+            <p className="text-gray-400 text-sm">
               {event.notes}
             </p>
           )}
         </div>
-        <span className={`text-xs font-medium px-3 py-1 rounded-full border whitespace-nowrap ${categoryStyles[event.category]}`}>
-          {event.category}
-        </span>
-      </div>
-      <div className="mt-4 flex gap-2 justify-end">
-        <button
-          onClick={() => onArchive(event.id)}
-          className="text-xs font-semibold text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md transition-colors"
-        >
-          {event.archived ? 'Unarchive' : 'Archive'}
-        </button>
-        <button
-          onClick={() => onDelete(event.id)}
-          className="text-xs font-semibold text-red-400 hover:text-white bg-red-900/50 hover:bg-red-800/80 px-3 py-1 rounded-md transition-colors"
-        >
-          Delete
-        </button>
+
+        
+        <div className="flex gap-2 justify-end mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <button
+            onClick={() => onArchive(event.id)}
+            title={event.archived ? 'Unarchive' : 'Archive'}
+            className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-full transition-colors"
+          >
+            <Archive size={16} />
+          </button>
+          <button
+            onClick={() => onDelete(event.id)}
+            title="Delete"
+            className="p-2 text-red-500/70 hover:text-red-500 hover:bg-red-900/50 rounded-full transition-colors"
+          >
+            <Trash2 size={16} />
+          </button>
+        </div>
       </div>
     </li>
   );

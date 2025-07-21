@@ -9,9 +9,10 @@ type NewEventData = {
 
 interface AddEventFormProps {
   onAddEvent: (eventData: NewEventData) => void;
+  onCancel: () => void;
 }
 
-const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
+const AddEventForm = ({ onAddEvent, onCancel }: AddEventFormProps) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -33,7 +34,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
   };
 
   return (
-    <div className="bg-gray-900 border border-gray-800 p-6 rounded-lg mb-8">
+    <div className="bg-[#171717] border border-gray-800 p-6 rounded-lg mb-8">
       <h2 className="text-xl font-semibold text-white mb-5">Create New Event</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -44,7 +45,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
+            className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
             placeholder="e.g., Project Deadline"
           />
         </div>
@@ -57,7 +58,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
+              className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
             />
           </div>
           <div>
@@ -68,7 +69,7 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
               value={time}
               onChange={(e) => setTime(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
+              className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition [color-scheme:dark]"
             />
           </div>
         </div>
@@ -79,14 +80,21 @@ const AddEventForm = ({ onAddEvent }: AddEventFormProps) => {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            className="w-full bg-gray-800 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
+            className="w-full bg-gray-900 border border-gray-700 rounded-md p-2 text-white focus:ring-indigo-500 focus:border-indigo-500 transition"
             placeholder="e.g., Discuss Q3 results"
           />
         </div>
-        <div className="text-right">
+        <div className="text-right flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-200"
+            className="bg-white hover:bg-gray-200 cursor-pointer text-black font-bold py-2 px-4 rounded-md transition-colors duration-200"
           >
             Add Event
           </button>
