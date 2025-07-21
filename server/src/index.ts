@@ -54,6 +54,31 @@ app.post('/events', (req: Request, res: Response) => {
   res.status(201).json(newEvent);
 });
 
+app.put('/events/:id', (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const eventIndex = events.findIndex(e => e.id === id);
+
+  if (eventIndex === -1) {
+    return res.status(404).json({ message: 'Event not found.' });
+  }
+
+  events[eventIndex].archived = true;
+  res.status(200).json(events[eventIndex]);
+});
+
+
+app.delete('/events/:id', (req: Request, res: Response) => {
+  const id = parseInt(req.params.id, 10);
+  const eventIndex = events.findIndex(e => e.id === id);
+
+  if (eventIndex === -1) {
+    return res.status(404).json({ message: 'Event not found.' });
+  }
+
+  events.splice(eventIndex, 1);
+  res.status(204).send();
+});
+
 app.get('/', (req: Request, res: Response) => {
   res.send('SchedulAI Backend is running!');
 });
