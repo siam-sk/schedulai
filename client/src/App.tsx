@@ -22,7 +22,7 @@ type FilterCategory = 'All' | Category;
 
 type NewEventData = Omit<Event, 'id' | 'category' | 'archived'>;
 
-const API_URL = 'http://localhost:5001/events';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
 
 function App() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -31,7 +31,7 @@ function App() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(`${API_URL}/events`);
       setEvents(response.data);
     } catch (error) {
       console.error("Failed to fetch events:", error);
@@ -44,7 +44,7 @@ function App() {
 
   const handleAddEvent = async (eventData: NewEventData) => {
     try {
-      await axios.post(API_URL, eventData);
+      await axios.post(`${API_URL}/events`, eventData);
       fetchEvents(); 
       setIsFormVisible(false); 
     } catch (error) {
@@ -55,7 +55,7 @@ function App() {
 
   const handleDeleteEvent = async (id: number) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_URL}/events/${id}`);
       fetchEvents(); 
     } catch (error) {
       console.error(`Failed to delete event ${id}:`, error);
@@ -64,7 +64,7 @@ function App() {
 
   const handleArchiveEvent = async (id: number) => {
     try {
-      await axios.put(`${API_URL}/${id}`);
+      await axios.put(`${API_URL}/events/${id}`);
       fetchEvents();
     } catch (error) {
       console.error(`Failed to archive event ${id}:`, error);
